@@ -111,6 +111,7 @@ end
 -- https://wiki.hoggitworld.com/view/DCS_Class_Object
 GRPC.exporters.unknown = function(object)
   return {
+    id   = tonumber(object.id_),
     name = tostring(object:getName()),
   }
 end

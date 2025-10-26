@@ -1,3 +1,4 @@
+---dcsme
 local missionCommands = missionCommands
 
 local function exporter(object)
@@ -22,7 +23,7 @@ local function exporter(object)
     return GRPC.exporters.cargo(object)
   else
     GRPC.logWarning(
-      "Could not determine object category of object with ID: " .. object:getID()
+      "Could not determine object category of object with ID: " .. object.id_
         .. ", Category: " .. category
     )
     return nil
@@ -51,7 +52,7 @@ local function typed_exporter(object)
     grpcTable.cargo = exporter(object)
   else
     GRPC.logWarning(
-      "Could not determine object category of object with ID: " .. object:getID()
+      "Could not determine object category of object with ID: " .. object.id_
         .. ", Category: " .. category
     )
     grpcTable.unknown = GRPC.exporters.unknown(object)
