@@ -45,12 +45,16 @@ GRPC.exporters.rawTransform = function(object)
 end
 
 GRPC.exporters.group = function(group)
-  return {
-    id = tonumber(group:getID()),
-    name = group:getName(),
-    coalition = group:getCoalition() + 1, -- Increment for non zero-indexed gRPC enum
-    category = group:getCategory() + 1, -- Increment for non zero-indexed gRPC enum
-  }
+  if group then
+    return {
+      id = tonumber(group:getID()),
+      name = group:getName(),
+      coalition = group:getCoalition() + 1, -- Increment for non zero-indexed gRPC enum
+      category = group:getCategory() + 1, -- Increment for non zero-indexed gRPC enum
+    }
+  else
+    return nil
+  end
 end
 
 GRPC.exporters.weapon = function(weapon)

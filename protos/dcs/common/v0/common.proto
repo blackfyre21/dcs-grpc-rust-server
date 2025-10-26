@@ -232,7 +232,7 @@ message Unit {
   // The name of the player if one is in control of the unit
   optional string player_name = 9;
   // The group that the unit belongs to
-  Group group = 10;
+  optional Group group = 10;
   // The number of this unit in the group. Does not change as units are
   // destroyed
   uint32 number_in_group = 11;
