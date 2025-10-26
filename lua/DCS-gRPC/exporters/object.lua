@@ -1,3 +1,4 @@
+---dcsme
 --
 -- Converts DCS tables in the Object hierarchy into tables suitable for
 -- serialization into GRPC responses
@@ -59,7 +60,7 @@ end
 
 GRPC.exporters.weapon = function(weapon)
   return {
-    id = tonumber(weapon:getName()),
+    id = tonumber(weapon.id_),
     type = weapon:getTypeName(),
     rawTransform = GRPC.exporters.rawTransform(weapon),
   }
