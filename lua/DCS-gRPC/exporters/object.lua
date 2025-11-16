@@ -1,4 +1,4 @@
----dcsme
+--dcsme
 --
 -- Converts DCS tables in the Object hierarchy into tables suitable for
 -- serialization into GRPC responses
@@ -51,7 +51,7 @@ GRPC.exporters.group = function(group)
       id = tonumber(group:getID()),
       name = group:getName(),
       coalition = group:getCoalition() + 1, -- Increment for non zero-indexed gRPC enum
-      category = group:getCategory() + 1, -- Increment for non zero-indexed gRPC enum
+      category = group:getCategory() + 1,   -- Increment for non zero-indexed gRPC enum
     }
   else
     return nil
@@ -80,7 +80,7 @@ GRPC.exporters.airbase = function(airbase)
   local a = {
     name = airbase:getName(),
     callsign = airbase:getCallsign(),
-    coalition = airbase:getCoalition() + 1, -- Increment for non zero-indexed gRPC enum
+    coalition = airbase:getCoalition() + 1,       -- Increment for non zero-indexed gRPC enum
     category = airbase:getDesc()['category'] + 1, -- Increment for non zero-indexed gRPC enum
     displayName = airbase:getDesc()['displayName'],
     position = GRPC.exporters.position(airbase:getPoint())
