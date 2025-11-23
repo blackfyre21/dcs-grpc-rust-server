@@ -3,6 +3,7 @@ package dcs.controller.v0;
 import "dcs/common/v0/common.proto";
 option csharp_namespace = "RurouniJones.Dcs.Grpc.V0.Controller";
 option go_package = "github.com/DCS-gRPC/go-bindings/dcs/v0/controller";
+option java_package = "ru.blackfyre.proto";
 
 service ControllerService {
   // https://wiki.hoggitworld.com/view/DCS_option_alarmState

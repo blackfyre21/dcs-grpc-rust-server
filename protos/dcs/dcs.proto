@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package dcs;
+option java_package = "ru.blackfyre.proto";
 
 import "dcs/atmosphere/v0/atmosphere.proto";
 import "dcs/coalition/v0/coalition.proto";
