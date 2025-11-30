@@ -4,7 +4,7 @@ import "dcs/common/v0/common.proto";
 import "google/protobuf/struct.proto";
 option csharp_namespace = "RurouniJones.Dcs.Grpc.V0.Mission";
 option go_package = "github.com/DCS-gRPC/go-bindings/dcs/v0/mission";
-option java_package = "ru.blackfyre.proto";
+option java_package = "ru.blackfyre.dcs.warcore.proto";
 
 // the "path" field in mission command requests and responses is a repeated
 // string however "paths" doesn't make sense. therefore we will disable

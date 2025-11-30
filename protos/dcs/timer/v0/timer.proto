@@ -2,7 +2,7 @@ syntax = "proto3";
 package dcs.timer.v0;
 option csharp_namespace = "RurouniJones.Dcs.Grpc.V0.Timer";
 option go_package = "github.com/DCS-gRPC/go-bindings/dcs/v0/timer";
-option java_package = "ru.blackfyre.proto";
+option java_package = "ru.blackfyre.dcs.warcore.proto";
 
 // https://wiki.hoggitworld.com/view/DCS_singleton_timer
 service TimerService {
