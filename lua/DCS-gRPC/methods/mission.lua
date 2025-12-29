@@ -19,7 +19,7 @@ local function exporter(object)
     return GRPC.exporters.static(object)
   elseif category == Object.Category.SCENERY then
     return GRPC.exporters.scenery(object)
-  elseif category == Object.Category.Cargo then
+  elseif category == Object.Category.CARGO then
     return GRPC.exporters.cargo(object)
   else
     GRPC.logWarning(
@@ -48,7 +48,7 @@ local function typed_exporter(object)
     grpcTable.static = exporter(object)
   elseif category == Object.Category.SCENERY then
     grpcTable.scenery = exporter(object)
-  elseif category == Object.Category.Cargo then
+  elseif category == Object.Category.CARGO then
     grpcTable.cargo = exporter(object)
   else
     GRPC.logWarning(
