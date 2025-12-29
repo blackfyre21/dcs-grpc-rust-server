@@ -76,6 +76,8 @@ message GetTransformResponse {
   dcs.common.v0.Orientation orientation = 3;
   // The velocity of the unit in both 2D and 3D space
   dcs.common.v0.Velocity velocity = 4;
+  //Player name is needed for CA units under control
+  optional string player_name = 5;
 }
 
 message GetPlayerNameRequest {

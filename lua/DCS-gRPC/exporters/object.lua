@@ -42,6 +42,7 @@ GRPC.exporters.rawTransform = function(object)
     right = p.z,
     up = p.y,
     velocity = object:getVelocity(),
+    playerName = Unit.getPlayerName(object) or ""
   }
 end
 
