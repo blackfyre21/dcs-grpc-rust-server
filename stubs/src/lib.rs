@@ -19,6 +19,7 @@ pub mod trigger;
 pub mod unit;
 mod utils;
 pub mod world;
+pub mod weapon;
 
 #[cfg(test)]
 mod tests {

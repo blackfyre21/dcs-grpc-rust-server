@@ -471,3 +471,4 @@ message Contact {
     Weapon weapon = 6;
   }
 }
+

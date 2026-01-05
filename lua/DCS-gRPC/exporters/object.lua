@@ -31,6 +31,17 @@ GRPC.exporters.unit = function(unit)
   }
 end
 
+---comment
+---@param object Object
+---@return string|true
+local function getPlayerName(object)
+  if object and object:isExist() and object:getCategory() == Object.Category.UNIT then
+    return Unit.getPlayerName(object) or ""
+  else
+    return ""
+  end
+end  
+
 -- Data used to calculate position/orientation/velocity on the Rust side.
 GRPC.exporters.rawTransform = function(object)
   local p = object:getPosition()
@@ -42,7 +53,7 @@ GRPC.exporters.rawTransform = function(object)
     right = p.z,
     up = p.y,
     velocity = object:getVelocity(),
-    playerName = Unit.getPlayerName(object) or ""
+    playerName = getPlayerName(object)
   }
 end
 

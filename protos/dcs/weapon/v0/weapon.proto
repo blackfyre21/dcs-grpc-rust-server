@@ -1,0 +1,25 @@
+syntax = "proto3";
+package dcs.weapon.v0;
+import "dcs/common/v0/common.proto";
+option csharp_namespace = "RurouniJones.Dcs.Grpc.V0.Weapon";
+option go_package = "github.com/DCS-gRPC/go-bindings/dcs/v0/weapon";
+option java_package = "ru.blackfyre.dcs.warcore.proto";
+
+service WeaponService {
+  rpc getTransform(GetWeaponTransformRequest) returns (GetWeaponTransformResponse) {}
+}
+
+message GetWeaponTransformRequest {
+  uint32 id = 1;
+}
+
+message GetWeaponTransformResponse {
+  double time = 1;
+  // The position of the unit
+  dcs.common.v0.Position position = 2;
+  // The orientation of the unit in both 2D and 3D space
+  dcs.common.v0.Orientation orientation = 3;
+  // The velocity of the unit in both 2D and 3D space
+  dcs.common.v0.Velocity velocity = 4;
+}
+

@@ -21,6 +21,7 @@ use stubs::timer::v0::timer_service_server::TimerServiceServer;
 use stubs::trigger::v0::trigger_service_server::TriggerServiceServer;
 use stubs::unit::v0::unit_service_server::UnitServiceServer;
 use stubs::world::v0::world_service_server::WorldServiceServer;
+use stubs::weapon::v0::weapon_service_server::WeaponServiceServer;
 use tokio::runtime::{Handle, Runtime};
 use tokio::sync::oneshot::{self, Receiver};
 use tokio::sync::{Mutex, mpsc};
@@ -275,6 +276,7 @@ async fn try_run(
             shutdown_signal.clone(),
         )))
         .add_service(UnitServiceServer::new(mission_rpc.clone()))
+        .add_service(WeaponServiceServer::new(mission_rpc.clone()))
         .add_service(WorldServiceServer::new(mission_rpc))
         .serve_with_shutdown(addr, after_shutdown.map(|_| ()))
         .await?;

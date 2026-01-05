@@ -1,6 +1,8 @@
 ---dcsme
 local missionCommands = missionCommands
 
+GRPC.weaponsLookup = {} ---@type table<integer, Weapon>
+
 local function exporter(object)
   if object == nil then
     return nil
@@ -66,6 +68,7 @@ GRPC.onDcsEvent = function(event)
     return nil
 
   elseif event.id == world.event.S_EVENT_SHOT then
+    GRPC.weaponsLookup[event.weapon.id_] = event.weapon
     return {
       time = event.time,
       event = {
