@@ -131,6 +131,7 @@ pub mod v0 {
     struct WeaponIntermediate {
         id: u32,
         r#type: String,
+        category: i32,
         raw_transform: Option<RawTransform>,
     }
 
@@ -139,6 +140,7 @@ pub mod v0 {
             let WeaponIntermediate {
                 id,
                 r#type,
+                category,
                 raw_transform,
             } = i;
             let transform = Transform::from(raw_transform.unwrap_or_default());
@@ -148,6 +150,7 @@ pub mod v0 {
                 position: Some(transform.position),
                 orientation: Some(transform.orientation),
                 velocity: Some(transform.velocity),
+                category: category,
             }
         }
     }

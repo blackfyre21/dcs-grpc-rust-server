@@ -71,9 +71,11 @@ GRPC.exporters.group = function(group)
 end
 
 GRPC.exporters.weapon = function(weapon)
+  GRPC.logInfo("Export Weapon category " .. weapon:getCategoryEx())
   return {
     id = tonumber(weapon.id_),
     type = weapon:getTypeName(),
+    category = weapon:getCategoryEx() + 1, --increment for non zero-indexed gRPC enum
     rawTransform = GRPC.exporters.rawTransform(weapon),
   }
 end

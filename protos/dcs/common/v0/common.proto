@@ -49,6 +49,9 @@ enum Coalition {
   COALITION_NEUTRAL = 1;
   COALITION_RED = 2;
   COALITION_BLUE = 3;
+  //Airbase can have such when built-in base capture logic works 
+  //and both coalitions have units on an airfield
+  COALITION_CONTESTED = 4; 
 }
 
 /**
@@ -261,6 +264,15 @@ enum GroupCategory {
   GROUP_CATEGORY_TRAIN = 5;
 }
 
+enum WeaponCategory {
+  WEAPON_CATEGORY_UNSPECIFIED = 0;
+  WEAPON_CATEGORY_SHELL = 1;
+  WEAPON_CATEGORY_MISSILE = 2;
+  WEAPON_CATEGORY_ROCKET = 3;
+  WEAPON_CATEGORY_BOMB = 4;
+  WEAPON_CATEGORY_TORPEDO = 5;
+}
+
 /**
  * An instance of a DCS weapon
  *
@@ -279,6 +291,8 @@ message Weapon {
   Orientation orientation = 4;
   // The velocity of the unit in both 2D and 3D space
   Velocity velocity = 5;
+  //Weapon category
+  WeaponCategory category = 6;
 }
 
 /**
