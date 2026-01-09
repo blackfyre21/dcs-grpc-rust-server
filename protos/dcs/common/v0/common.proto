@@ -293,6 +293,8 @@ message Weapon {
   Velocity velocity = 5;
   //Weapon category
   WeaponCategory category = 6;
+  //Weapon coalition
+  Coalition coalition = 7;
 }
 
 /**

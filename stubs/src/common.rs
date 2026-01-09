@@ -132,6 +132,7 @@ pub mod v0 {
         id: u32,
         r#type: String,
         category: i32,
+        coalition: i32,
         raw_transform: Option<RawTransform>,
     }
 
@@ -141,6 +142,7 @@ pub mod v0 {
                 id,
                 r#type,
                 category,
+                coalition,
                 raw_transform,
             } = i;
             let transform = Transform::from(raw_transform.unwrap_or_default());
@@ -151,6 +153,7 @@ pub mod v0 {
                 orientation: Some(transform.orientation),
                 velocity: Some(transform.velocity),
                 category: category,
+                coalition: coalition,
             }
         }
     }

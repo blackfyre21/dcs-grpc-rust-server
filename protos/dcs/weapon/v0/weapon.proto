@@ -15,11 +15,11 @@ message GetWeaponTransformRequest {
 
 message GetWeaponTransformResponse {
   double time = 1;
-  // The position of the unit
+  // The position of the weapon
   dcs.common.v0.Position position = 2;
-  // The orientation of the unit in both 2D and 3D space
+  // The orientation of the weapon in both 2D and 3D space
   dcs.common.v0.Orientation orientation = 3;
-  // The velocity of the unit in both 2D and 3D space
+  // The velocity of the weapon in both 2D and 3D space
   dcs.common.v0.Velocity velocity = 4;
 }
 

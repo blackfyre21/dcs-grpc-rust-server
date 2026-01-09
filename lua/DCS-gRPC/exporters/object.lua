@@ -40,7 +40,7 @@ local function getPlayerName(object)
   else
     return ""
   end
-end  
+end
 
 -- Data used to calculate position/orientation/velocity on the Rust side.
 GRPC.exporters.rawTransform = function(object)
@@ -70,11 +70,14 @@ GRPC.exporters.group = function(group)
   end
 end
 
+---@param weapon Weapon
+---@return table
 GRPC.exporters.weapon = function(weapon)
   GRPC.logInfo("Export Weapon category " .. weapon:getCategoryEx())
   return {
     id = tonumber(weapon.id_),
     type = weapon:getTypeName(),
+    coalition = weapon:getCoalition() + 1,  --increment for non zero-indexed gRPC enum
     category = weapon:getCategoryEx() + 1, --increment for non zero-indexed gRPC enum
     rawTransform = GRPC.exporters.rawTransform(weapon),
   }

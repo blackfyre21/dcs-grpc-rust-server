@@ -11,6 +11,9 @@ GRPC.methods.getWeaponTransform = function(params)
     })
   else
     GRPC.weaponsLookup[params.id] = nil
-    return GRPC.errorNotFound(string.format("weapon %d does not exist", params.id))
+    return GRPC.success({
+      time = timer.getTime(),
+      rawTransform = nil
+    })
   end
 end
