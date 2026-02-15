@@ -200,6 +200,21 @@ message InputPosition {
 }
 
 /**
+ * Position in DCS native 3d coordinates
+ * u is the easting and always goes as x in both Vec2 and Vec3 types
+ * v is the northing and goes as z in Vec3 type and y in Vec2 type
+ * alt is an altitude and goes as y in Vec3 and has no value in Vec2
+ */
+message InputPositionFlat {
+  // Altitude in meters above Mean Sea Level (MSL)
+  double alt = 1;
+  // Distance between DCS' map origin to object in meters on north-south axis.
+  double u = 2;
+  // Distance between DCS' map origin to object in meters on west-east axis.
+  double v = 3;
+}
+
+/**
  * This type is returned if an object category cannot be determined
  *
  * The base object includes the `getName()` function so even for an unknown type
@@ -488,3 +503,8 @@ message Contact {
   }
 }
 
+enum RadioModulation {
+  RADIO_MODULATION_UNSPECIFIED = 0;
+  RADIO_MODULATION_AM = 1; 
+  RADIO_MODULATION_FM = 2;
+}

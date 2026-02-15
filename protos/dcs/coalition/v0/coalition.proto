@@ -1,6 +1,7 @@
 syntax = "proto3";
 package dcs.coalition.v0;
 import "dcs/common/v0/common.proto";
+import "dcs/common/v0/ai.proto";
 option csharp_namespace = "RurouniJones.Dcs.Grpc.V0.Coalition";
 option go_package = "github.com/DCS-gRPC/go-bindings/dcs/v0/coalition";
 option java_package = "ru.blackfyre.dcs.warcore.proto";
@@ -9,6 +10,8 @@ option java_package = "ru.blackfyre.dcs.warcore.proto";
 service CoalitionService {
   // https://wiki.hoggitworld.com/view/DCS_func_addGroup
   rpc AddGroup(AddGroupRequest) returns (AddGroupResponse) {}
+
+  rpc SpawnGroup(SpawnGroupRequest) returns (SpawnGroupResponse) {}
 
   // https://wiki.hoggitworld.com/view/DCS_func_getStaticObjects
   rpc GetStaticObjects(GetStaticObjectsRequest)
@@ -41,6 +44,18 @@ service CoalitionService {
   // https://wiki.hoggitworld.com/view/DCS_func_getPlayers
   rpc GetPlayerUnits(GetPlayerUnitsRequest) returns (GetPlayerUnitsResponse) {}
 }
+
+message SpawnGroupRequest {
+  oneof group_data {
+    dcs.common.v0.SpawnVehicleGroupData vehicle = 1;
+    dcs.common.v0.SpawnVehicleGroupData ship = 2;
+    dcs.common.v0.SpawnAircraftGroupData airplane = 3;
+    dcs.common.v0.SpawnAircraftGroupData helicopter = 4;
+  }
+  dcs.common.v0.Country country = 5;
+}
+
+message SpawnGroupResponse {}
 
 message AddGroupRequest {
   // The coalition is determined by the provided Country

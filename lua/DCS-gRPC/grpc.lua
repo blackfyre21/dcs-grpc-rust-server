@@ -149,6 +149,7 @@ GRPC.event = grpc.event
 --
 
 GRPC.methods = {}
+dofile(GRPC.luaPath .. [[methods\common.lua]])
 dofile(GRPC.luaPath .. [[methods\atmosphere.lua]])
 dofile(GRPC.luaPath .. [[methods\coalitions.lua]])
 dofile(GRPC.luaPath .. [[methods\controllers.lua]])

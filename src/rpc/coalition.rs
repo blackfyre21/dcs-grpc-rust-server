@@ -13,6 +13,14 @@ impl CoalitionService for MissionRpc {
         let res = self.request("addGroup", request).await?;
         Ok(Response::new(res))
     }
+    
+    async fn spawn_group(
+        &self,
+        request: Request<coalition::v0::SpawnGroupRequest>,
+    ) -> Result<Response<coalition::v0::SpawnGroupResponse>, Status> {
+        let res = self.request("spawnGroup", request).await?;
+        Ok(Response::new(res))
+    }
 
     async fn get_static_objects(
         &self,

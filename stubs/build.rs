@@ -69,6 +69,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "dcs.mission.v0.StreamEventsResponse.GroupCommandEvent.details",
             r#"#[serde(with = "crate::utils::proto_struct")]"#,
         )
+        .field_attribute(
+            "dcs.common.v0.AiTask.params",
+            r#"#[serde(with = "crate::utils::proto_struct")]"#,
+        )
+        .field_attribute(
+            "dcs.common.v0.Payload.Pylon.settings",
+            r#"#[serde(with = "crate::utils::proto_struct")]"#,
+        )
+        .field_attribute(
+            "dcs.common.v0.SpawnVehicleGroupData.tasks",
+            r#"#[serde(with = "crate::utils::proto_struct")]"#,
+        )
+        .field_attribute(
+            "dcs.common.v0.SpawnAircraftData.additional_properties",
+            r#"#[serde(with = "crate::utils::proto_struct")]"#,
+        )
         .build_server(cfg!(feature = "server"))
         .build_client(cfg!(feature = "client"))
         .compile_protos(&["../protos/dcs/dcs.proto"], &["../protos"])?;

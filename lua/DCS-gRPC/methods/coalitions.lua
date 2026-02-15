@@ -1,10 +1,14 @@
+---dcsme
 --
 -- RPC coalition actions
 -- https://wiki.hoggitworld.com/view/DCS_singleton_coalition
 --
+--
+local Inspect = require "inspect"
 
 local GRPC = GRPC
 local coalition = coalition
+local Common = GRPC.Common
 
 local skill = {
   [0] = "Random",
@@ -70,7 +74,7 @@ local createGroundGroupTemplate = function(groupTemplate)
           task = {
             id = "ComboTask",
             params = {
-                tasks = {}
+              tasks = {}
             }
           }
         }
@@ -105,6 +109,153 @@ local createGroundGroupTemplate = function(groupTemplate)
   return groupTable
 end
 
+local function makeCommonUnitData(unitCommon)
+  local unitData = {}
+  unitData.name = unitCommon.name
+  unitData.type = unitCommon.type
+  unitData.unitId = unitCommon.unitId or nil --auto assign
+  unitData.skill = Common.getSkill(unitCommon.skill)
+  unitData.heading = unitCommon.heading
+  unitData.livery_id = unitCommon.liveryId or nil
+  local pos = Common.extractPosition(unitCommon.position)
+  unitData.x = pos.x
+  unitData.y = pos.z
+  return unitData
+end
+
+local function makeUnits(units, mapper)
+  local unitsData = {}
+  for i, value in ipairs(units) do
+    unitsData[i] = mapper(value)
+  end
+  return unitsData
+end
+
+local function makeRoute(route)
+  local function makeWp(p)
+    local wp = {}
+    wp.alt_type = Common.getAltitudeType(p.altType)
+    wp.type = Common.getWaypointType(p.type)
+    wp.speed = p.speed
+    wp.speed_locked = p.speedLocked
+    wp.ETA = p.eta
+    wp.ETA_locked = p.etaLocked
+    wp.action = Common.getWaypointAction(p.action)
+    wp.formation_template = p.formationTemplate or ""
+    local pos = Common.extractPosition(p.position)
+    wp.alt = pos.y
+    wp.x = pos.x
+    wp.y = pos.z
+    wp.task = p.task
+    return wp
+  end
+  local points = {}
+  for i, wp in ipairs(route.points) do
+    points[i] = makeWp(wp)
+  end
+  return { points = points }
+end
+
+local function makeCommonGroupData(common)
+  local groupData = {}
+  groupData.groupId = common.groupId
+  groupData.name = common.name
+  groupData.start_time = common.startTime or 0
+  groupData.hidden = common.hidden or false
+  groupData.hiddenOnMFD = common.hiddenOnMfd or true
+  groupData.hiddenOnPlanner = common.hiddenOnPlanner
+  groupData.task_selected = common.taskSelected or true
+  groupData.uncontrollable = common.uncontrollable or false
+  groupData.lateActivation = common.lateActivation or false
+  local pos = Common.extractPosition(common.position)
+  groupData.x = pos.x
+  groupData.y = pos.z
+  groupData.route = makeRoute(common.route)
+  return groupData
+end
+
+local function makeSurfaceUnitData(unitParams)
+  local unitData = makeCommonUnitData(unitParams.common)
+  unitData.playerCanDrive = unitParams.playerCanDrive or true
+  unitData.coldAtStart = unitParams.coldAtStart
+  return unitData
+end
+
+local function getCallsign(cl)
+  if cl.eastern then
+    return cl.eastern
+  elseif cl.western then
+    return {
+      ["name"] = cl.western.name,
+      [1] = cl.western.dbCallnamesIndex,
+      [2] = cl.western.groupIndex,
+      [3] = cl.western.unitIndex,
+    }
+  end
+end
+
+local function makeAircraftUnitData(unitParams)
+  local unitData = makeCommonUnitData(unitParams.common)
+  unitData.onboard_num = unitParams.onboardNum
+  unitData.alt_type = Common.getAltitudeType(unitParams.altType)
+  unitData.alt = unitParams.alt
+  unitData.callsign = getCallsign(unitParams.callsign)
+  unitData.payload = unitParams.payload
+  unitData.psi = unitParams.psi
+  unitData.hardpoint_racks = unitParams.hardpointRacks
+  unitData.AddPropAircraft = unitParams.additionalProperties
+  return unitData
+end
+
+local function spawnSurfaceGroup(params)
+  local groupData = makeCommonGroupData(params.common)
+  groupData.visible = params.visible
+  groupData.manualHeading = params.manualHeading
+  groupData.units = makeUnits(params.units, makeSurfaceUnitData)
+
+  return groupData
+end
+
+local function spawnAircraftGroup(params)
+  local groupData = makeCommonGroupData(params.common)
+  groupData.uncontrolled = params.uncontrolled
+  groupData.communitcation = params.communication or true
+  groupData.modulation = params.modulation - 1
+  groupData.frequency = params.frequency or 305
+  groupData.radioSet = params.radioSet
+  groupData.units = makeUnits(params.units, makeAircraftUnitData)
+  return groupData
+end
+
+
+GRPC.methods.spawnGroup = function(params)
+  GRPC.logInfo("spawnGroup has been invoked with params = " .. Inspect(params))
+  if params.groupData then
+    if params.groupData.vehicle then
+      local groupData = spawnSurfaceGroup(params.groupData.vehicle)
+      GRPC.logInfo("Attempting to spawn\n" .. Inspect(groupData))
+      coalition.addGroup(params.country - 1, Group.Category.GROUND, groupData)
+    elseif params.groupData.ship then
+      local groupData = spawnSurfaceGroup(params.groupData.ship)
+      GRPC.logInfo("Attempting to spawn\n" .. Inspect(groupData))
+      coalition.addGroup(params.country - 1, Group.Category.SHIP, groupData)
+    elseif params.groupData.airplane then
+      local groupData = spawnAircraftGroup(params.groupData.airplane)
+      GRPC.logInfo("Attempting to spawn\n" .. Inspect(groupData))
+      coalition.addGroup(params.country - 1, Group.Category.AIRPLANE, groupData)
+    elseif params.groupData.helicopter then
+      local groupData = spawnAircraftGroup(params.groupData.airplane)
+      GRPC.logInfo("Attempting to spawn\n" .. Inspect(groupData))
+      coalition.addGroup(params.country - 1, Group.Category.HELICOPTER, groupData)
+    else
+      return GRPC.errorInvalidArgument("group data is unknown")
+    end
+  else
+    return GRPC.errorInvalidArgument("group data must be specified")
+  end
+  return GRPC.success({})
+end
+
 GRPC.methods.addGroup = function(params)
   if params.groupCategory == 0 then
     return GRPC.errorInvalidArgument("group category must be specified")
@@ -117,7 +268,7 @@ GRPC.methods.addGroup = function(params)
 
   coalition.addGroup(params.country - 1, params.groupCategory - 1, template) -- Decrement for non zero-indexed gRPC enum
 
-  return GRPC.success({group = GRPC.exporters.group(Group.getByName(template.name))})
+  return GRPC.success({ group = GRPC.exporters.group(Group.getByName(template.name)) })
 end
 
 GRPC.methods.getStaticObjects = function(params)
@@ -132,7 +283,7 @@ GRPC.methods.getStaticObjects = function(params)
     end
   end
 
-  return GRPC.success({statics = result})
+  return GRPC.success({ statics = result })
 end
 
 GRPC.methods.addStaticObject = function(params)
@@ -239,7 +390,7 @@ GRPC.methods.getGroups = function(params)
     end
   end
 
-  return GRPC.success({groups = result})
+  return GRPC.success({ groups = result })
 end
 
 -- This method should be called once per coalition per mission so using COALITION_ALL to save 2
@@ -262,5 +413,5 @@ GRPC.methods.getPlayerUnits = function(params)
   for i, unit in ipairs(units) do
     result[i] = GRPC.exporters.unit(unit)
   end
-  return GRPC.success({units = result})
+  return GRPC.success({ units = result })
 end

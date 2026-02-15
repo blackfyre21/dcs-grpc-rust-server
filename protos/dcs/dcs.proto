@@ -6,6 +6,7 @@ option java_package = "ru.blackfyre.dcs.warcore.proto";
 import "dcs/atmosphere/v0/atmosphere.proto";
 import "dcs/coalition/v0/coalition.proto";
 import "dcs/common/v0/common.proto";
+import "dcs/common/v0/ai.proto";
 import "dcs/controller/v0/controller.proto";
 import "dcs/custom/v0/custom.proto";
 import "dcs/group/v0/group.proto";
