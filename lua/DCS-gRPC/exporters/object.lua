@@ -12,8 +12,8 @@ GRPC.exporters.position = function(pos)
     lat = lat,
     lon = lon,
     alt = alt,
-    u = pos.x,
-    v = pos.z,
+    u = pos.z,
+    v = pos.x,
   }
 end
 
