@@ -124,12 +124,12 @@ GRPC.exporters.cargo = function()
 end
 
 -- every object, even an unknown one, should at least have getName implemented as it is
+-- Nope :-)
 -- in the base object of the hierarchy
 -- https://wiki.hoggitworld.com/view/DCS_Class_Object
 GRPC.exporters.unknown = function(object)
   return {
-    id   = tonumber(object.id_),
-    name = tostring(object:getName()),
+     runtimeId   = tonumber(object.id_),
   }
 end
 

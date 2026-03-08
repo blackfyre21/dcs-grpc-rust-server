@@ -217,11 +217,10 @@ message InputPositionFlat {
 /**
  * This type is returned if an object category cannot be determined
  *
- * The base object includes the `getName()` function so even for an unknown type
- * we _should_ be able to get the name
+ * Not every object has a name, but every object has a runtime id (id_ field)
  */
 message Unknown {
-  string name = 1;
+  int32 runtime_id = 1;
 }
 
 /**
