@@ -5,15 +5,17 @@ GRPC.weaponsLookup = {} ---@type table<integer, Weapon>
 
 local function exporter(object)
   if object == nil then
+    GRPC.logError("Trying to export a nil")
     return nil
   end
 
-  local category = Object.getCategory(object) -- change for DCS API fixes in getcategory()
+  local category = Object.getCategory(object) or "undefined" -- change for DCS API fixes in getcategory()
 
   if category == Object.Category.BASE or object.className_ == 'Airbase' then
     -- carriers are of category unit, but are a Airbase class
     return GRPC.exporters.airbase(object)
-  elseif category == Object.Category.UNIT then
+  elseif category == Object.Category.UNIT  or object.className_ == 'Unit' then
+  --ejected pilot doesn't have a categroy, but he is a unit
     return GRPC.exporters.unit(object)
   elseif category == Object.Category.WEAPON then
     return GRPC.exporters.weapon(object)
@@ -28,21 +30,23 @@ local function exporter(object)
       "Could not determine object category of object with ID: " .. object.id_
         .. ", Category: " .. category
     )
-    return nil
+    return GRPC.exporters.unknown(object)
   end
 end
 
 local function typed_exporter(object)
   if object == nil then
+    GRPC.logError("Trying to export a nil")
     return nil
   end
 
   local grpcTable = {}
-  local category = Object.getCategory(object)
+  local category = Object.getCategory(object) or "undefined"
 
   if category == Object.Category.BASE or object.className_ == 'Airbase' then
     grpcTable.airbase = exporter(object)
-  elseif category == Object.Category.UNIT then
+  elseif category == Object.Category.UNIT or object.className_ == 'Unit' then
+  --ejected pilot doesn't have a categroy, but he is a unit
     grpcTable.unit = exporter(object)
   elseif category == Object.Category.WEAPON then
     grpcTable.weapon = exporter(object)
@@ -385,12 +389,15 @@ GRPC.onDcsEvent = function(event)
     }
 
   elseif event.id == world.event.S_EVENT_LANDING_AFTER_EJECTION then
+    GRPC.logInfo("landingAfterEjection")
     return {
       time = event.time,
       event = {
         type = "landingAfterEjection",
         initiator = {initiator = typed_exporter(event.initiator)},
-        place = GRPC.exporters.position(event.place),
+        --there is non-exsisting Airbase object in event.place,
+        --hence we get a point from initiator, which is weird unit itself
+        place = GRPC.exporters.position(event.initiator:getPoint()),
       },
     }
 

@@ -25,7 +25,7 @@ local handler = {}
 function handler.onMissionLoadEnd()
   local ok, err = pcall(load)
   if not ok then
-    log.write("[GRPC-Hook]", log.ERROR, "Failed to set up gRPC listener: "..tostring(err))
+    log.write("[GRPC-Hook]", log.ERROR, "Failed to set up gRPC listener: " .. tostring(err))
   end
 end
 
@@ -57,7 +57,6 @@ function handler.onPlayerTrySendChat(playerID, msg)
       message = msg
     },
   })
-
 end
 
 function handler.onPlayerTryConnect(addr, name, ucid, id)
@@ -87,15 +86,19 @@ end
 function handler.onPlayerChangeSlot(playerId)
   local playerInfo = net.get_player_info(playerId)
 
-  grpc.event({
-    time = DCS.getModelTime(),
-    event = {
-      type = "playerChangeSlot",
-      playerId = playerId,
-      coalition = playerInfo.side + 1, -- offsetting for grpc COALITION enum
-      slotId = playerInfo.slot
-    },
-  })
+  if playerInfo then
+    grpc.event({
+      time = DCS.getModelTime(),
+      event = {
+        type = "playerChangeSlot",
+        playerId = playerId,
+        coalition = playerInfo.side + 1, -- offsetting for grpc COALITION enum
+        slotId = playerInfo.slot
+      },
+    })
+  else
+    GRPC.logError("No playerInfo in onPlayerChangeSlot")
+  end
 end
 
 DCS.setUserCallbacks(handler)
