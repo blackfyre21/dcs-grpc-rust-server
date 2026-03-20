@@ -57,6 +57,8 @@ enum WaypointType {
   WAYPOINT_TYPE_TURNING_POINT = 3;
   WAYPOINT_TYPE_TAKEOFF_PARKING_HOT = 4;
   WAYPOINT_TYPE_LAND = 5;
+  WAYPOINT_TYPE_TAKEOFF_GROUND = 6;
+  WAYPOINT_TYPE_TAKEOFF_GROUND_HOT  = 7;
 }
 
 enum WaypointAction {
@@ -152,7 +154,6 @@ message SpawnAircraftData {
   SpawnUnitData common = 1;
   optional int32 parking = 2;
   optional int32 parking_id = 3;
-  //Either Russian style numbers (137) or NATO-style Enfield11
   int32 onboard_num = 5;
   AltitudeType alt_type = 6;
   double alt = 12;
@@ -160,6 +161,7 @@ message SpawnAircraftData {
   //Negative heading
   double psi = 8;
   Payload payload = 9;
+  //Either Russian style numbers (137) or NATO-style Enfield11
   oneof callsign {
     Callsign western = 10;
     string eastern = 11;

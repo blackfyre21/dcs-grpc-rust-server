@@ -41,6 +41,8 @@ function Common.getWaypointType(val)
     [3] = AI.Task.WaypointType.TURNING_POINT,
     [4] = AI.Task.WaypointType.TAKEOFF_PARKING_HOT,
     [5] = AI.Task.WaypointType.LAND,
+    [6] = "TakeOffGround",
+    [7] = "TakeOffGroundHot", --because there is no constant
   }
   return dict[val] or AI.Task.WaypointType.TURNING_POINT
 end
