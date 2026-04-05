@@ -197,6 +197,17 @@ local function getCallsign(cl)
   end
 end
 
+---The whole purpose of the function is to map to UPPER case
+---@param pylons table
+---@return table
+local function getPylons(pylons)
+  local edPylons = {}
+  for _, p in ipairs(pylons) do
+    edPylons[#edPylons+1] = {["CLSID"] = p.clsid, settings = p.settings}
+  end
+  return edPylons
+end
+
 local function makeAircraftUnitData(unitParams)
   local unitData = makeCommonUnitData(unitParams.common)
   unitData.onboard_num = unitParams.onboardNum
@@ -204,6 +215,7 @@ local function makeAircraftUnitData(unitParams)
   unitData.alt = unitParams.alt
   unitData.callsign = getCallsign(unitParams.callsign)
   unitData.payload = unitParams.payload
+  unitData.payload.pylons = getPylons(unitParams.payload.pylons)
   unitData.psi = unitParams.psi
   unitData.hardpoint_racks = unitParams.hardpointRacks
   unitData.AddPropAircraft = unitParams.additionalProperties
@@ -226,6 +238,7 @@ local function spawnAircraftGroup(params)
   groupData.modulation = params.modulation - 1
   groupData.frequency = params.frequency or 305
   groupData.radioSet = params.radioSet
+  groupData.task = params.task
   groupData.units = makeUnits(params.units, makeAircraftUnitData)
   return groupData
 end
