@@ -1,16 +1,20 @@
+local Inspect = require "inspect"
 local GRPC = GRPC
 Common = {}
 
-function Common.extractPosition(paramPosition)
+function Common.extractPosition(position)
+  GRPC.logInfo("extractPosition = " .. Inspect(position))
+  local coords = position.coordinates
   local pos = { x = 0, y = 0, z = 0 }
-  if paramPosition and paramPosition.flatPos then
-    pos.x = paramPosition.flatPos.u
-    pos.z = paramPosition.flatPos.v
-    pos.y = paramPosition.flatPos.alt
-  elseif paramPosition and paramPosition.sphericPos then
-    pos = coord.LLtoLO(paramPosition.spheric_pos.lat,
-                       paramPosition.spheric_pos.lon,
-                       paramPosition.spheric_pos.alt)
+  if coords and coords.cartesian then
+    pos.z = coords.cartesian.u --east-west 
+    pos.x = coords.cartesian.v --north-south
+    pos.y = coords.cartesian.alt
+    GRPC.logInfo("extractPosition returning = " .. Inspect(pos))
+  elseif coords and coords.geodetic then
+    pos = coord.LLtoLO(coords.geodetic.lat,
+                       coords.geodetic.lon,
+                       coords.geodetic.alt)
   end
   return pos
 end

@@ -208,10 +208,33 @@ message InputPosition {
 message InputPositionFlat {
   // Altitude in meters above Mean Sea Level (MSL)
   double alt = 1;
-  // Distance between DCS' map origin to object in meters on north-south axis.
+  // Distance between DCS' map origin to the point in meters on west-east axis.
   double u = 2;
-  // Distance between DCS' map origin to object in meters on west-east axis.
+  // Distance between DCS' map origin to the point in meters on north-south axis.
   double v = 3;
+}
+
+message InputCoordinates {
+  message Geodetic {
+    // Latitude in Decimal Degrees format
+    double lat = 1;
+    // Longitude in Decimal Degrees format
+    double lon = 2;
+    // Altitude in Meters above Mean Sea Level (MSL)
+    double alt = 3;
+  }
+  message Cartesian {
+    // Altitude in meters above Mean Sea Level (MSL)
+    double alt = 1;
+    // Distance between DCS' map origin to the point in meters on west-east axis.
+    double u = 2;
+    // Distance between DCS' map origin to the point in meters on north-south axis.
+    double v = 3;
+  }
+  oneof coordinates {
+    Geodetic geodetic = 1;
+    Cartesian cartesian = 2;
+  }
 }
 
 /**

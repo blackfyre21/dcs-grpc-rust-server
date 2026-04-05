@@ -117,7 +117,8 @@ local function makeCommonUnitData(unitCommon)
   unitData.skill = Common.getSkill(unitCommon.skill)
   unitData.heading = unitCommon.heading
   unitData.livery_id = unitCommon.liveryId or nil
-  local pos = Common.extractPosition(unitCommon.position)
+  GRPC.logInfo("Extracting position from makeCommonUnitData " .. Inspect(unitCommon.position))
+  local pos = Common.extractPosition(unitCommon.position) --bad?
   unitData.x = pos.x
   unitData.y = pos.z
   return unitData
@@ -142,6 +143,7 @@ local function makeRoute(route)
     wp.ETA_locked = p.etaLocked
     wp.action = Common.getWaypointAction(p.action)
     wp.formation_template = p.formationTemplate or ""
+    GRPC.logInfo("Extracting position from makeWp " .. Inspect(p.position))
     local pos = Common.extractPosition(p.position)
     wp.alt = pos.y
     wp.x = pos.x
@@ -167,6 +169,7 @@ local function makeCommonGroupData(common)
   groupData.task_selected = common.taskSelected or true
   groupData.uncontrollable = common.uncontrollable or false
   groupData.lateActivation = common.lateActivation or false
+  GRPC.logInfo("Extracting position from makeCommonGroupData " .. Inspect(common.position))
   local pos = Common.extractPosition(common.position)
   groupData.x = pos.x
   groupData.y = pos.z

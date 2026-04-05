@@ -16,7 +16,7 @@ GRPC.methods.getWindWithTurbulence = function(params)
 end
 
 GRPC.methods.getTemperatureAndPressure = function(params)
-  local point = coord.LLtoLO(params.position.lat, params.position.lon, params.position.alt)
+  local point = GRPC.Common.extractPosition(params.point)
 
   local temperature, pressure = atmosphere.getTemperatureAndPressure(point)
 

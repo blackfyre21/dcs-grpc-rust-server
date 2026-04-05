@@ -87,21 +87,16 @@ message AiComboTask {
 }
 
 message Waypoint {
-  AltitudeType alt_type = 3;
-  WaypointType type = 4;
-  double speed = 5;
-  bool speed_locked = 6;
-  uint32 eta = 7;
-  bool eta_locked = 8;
-  WaypointAction action = 9; 
-  optional string formation_template = 10;
-
-  oneof position {
-    dcs.common.v0.InputPositionFlat flat_pos = 1;
-    dcs.common.v0.InputPosition spheric_pos = 2;
-  }
-
-  AiComboTask task = 11;
+  dcs.common.v0.InputCoordinates position = 1;
+  AltitudeType alt_type = 2;
+  WaypointType type = 3;
+  double speed = 4;
+  bool speed_locked = 5;
+  uint32 eta = 6;
+  bool eta_locked = 7;
+  WaypointAction action = 8; 
+  optional string formation_template = 9;
+  AiComboTask task = 10;
 }
 
 message Route {
@@ -116,10 +111,7 @@ message SpawnUnitData {
   //Unit haeading in radians
   double heading = 5;
   optional string livery_id = 6;
-  oneof position {
-    dcs.common.v0.InputPositionFlat flat_pos = 7;
-    dcs.common.v0.InputPosition spheric_pos = 8;
-  }
+  dcs.common.v0.InputCoordinates position = 7;
 }
 
 message SpawnVehicleData {
@@ -132,7 +124,7 @@ message SpawnVehicleData {
 message Callsign {
   string name = 1;
   int32 db_callnames_index = 2;
-  int32 groupd_index = 3;
+  int32 group_index = 3;
   int32 unit_index = 4;
 }
 
@@ -145,7 +137,7 @@ message Payload {
   int32 gun = 5;
   repeated Pylon pylons = 6;
   message Pylon {
-    string cslid = 1;
+    string clsid = 1;
     google.protobuf.Struct settings = 2;
   }
 }
@@ -184,10 +176,7 @@ message SpawnGroupData {
   //This is enum
   string task = 10;
   Route route = 11;
-  oneof position {
-    dcs.common.v0.InputPositionFlat flat_pos = 12;
-    dcs.common.v0.InputPosition spheric_pos = 13;
-  }
+  dcs.common.v0.InputCoordinates position = 12;
 }
 
 message SpawnVehicleGroupData {
@@ -197,7 +186,6 @@ message SpawnVehicleGroupData {
   optional int32 probability = 4;
   optional google.protobuf.Struct tasks = 5;
   repeated SpawnVehicleData units = 6;
-  Route route = 7;
 }
 
 message SpawnAircraftGroupData {
@@ -205,9 +193,8 @@ message SpawnAircraftGroupData {
   optional bool uncontrolled = 2;
   optional bool communication = 3;
   dcs.common.v0.RadioModulation modulation = 4;
-  int64 frequency = 5;
+  double frequency = 5;
   optional bool radioSet = 6;
   repeated SpawnAircraftData units = 7;
-  Route route = 8;
 }
 
