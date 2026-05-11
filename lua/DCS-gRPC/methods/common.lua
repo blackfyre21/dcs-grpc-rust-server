@@ -7,14 +7,14 @@ function Common.extractPosition(position)
   local coords = position.coordinates
   local pos = { x = 0, y = 0, z = 0 }
   if coords and coords.cartesian then
-    pos.z = coords.cartesian.u --east-west 
+    pos.z = coords.cartesian.u --east-west
     pos.x = coords.cartesian.v --north-south
     pos.y = coords.cartesian.alt
     GRPC.logInfo("extractPosition returning = " .. Inspect(pos))
   elseif coords and coords.geodetic then
     pos = coord.LLtoLO(coords.geodetic.lat,
-                       coords.geodetic.lon,
-                       coords.geodetic.alt)
+      coords.geodetic.lon,
+      coords.geodetic.alt)
   end
   return pos
 end
@@ -52,7 +52,7 @@ function Common.getWaypointType(val)
 end
 
 function Common.getWaypointAction(val)
- local dict = {
+  local dict = {
     [1] = "Off Road",
     [2] = "On Road",
     [3] = "Turning Point",
@@ -60,4 +60,33 @@ function Common.getWaypointAction(val)
   }
   return dict[val] or ""
 end
+
+function Common.sanitizeForJson(obj)
+  local obj_type = type(obj)
+
+  -- If it's not a table, return the value only if it's JSON-compatible
+  if obj_type ~= "table" then
+    if obj_type == "string" or obj_type == "number" or obj_type == "boolean" or obj_type == "nil" then
+      return obj
+    end
+    return nil     -- Filters out functions, userdata, and threads
+  end
+
+  local copy = {}
+  for k, v in pairs(obj) do
+    -- JSON keys must be strings (though Lua allows numbers, most encoders handle them)
+    -- We skip the key if it's a function or other non-serializable type
+    local k_type = type(k)
+    if k_type == "string" or k_type == "number" then
+      local sanitized_val = Common.sanitizeForJson(v)
+      -- Only add to the copy if the value is not nil
+      if sanitized_val ~= nil then
+        copy[k] = sanitized_val
+      end
+    end
+  end
+
+  return copy
+end
+
 GRPC.Common = Common
