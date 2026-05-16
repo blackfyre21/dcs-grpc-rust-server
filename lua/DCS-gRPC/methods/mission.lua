@@ -436,6 +436,14 @@ GRPC.onDcsEvent = function(event)
       },
     }
 
+  elseif event.id == world.event.S_EVENT_SIMULATION_START then
+      return {
+        time = event.time,
+        event = {
+          type = "simulationStart"
+        },
+    }
+
   -- S_EVENT_BDA: apparently not used yet
   -- S_EVENT_MAX: assumingly an end marker for the events enum and thus not a real event
 

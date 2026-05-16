@@ -415,6 +415,10 @@ message StreamEventsResponse {
     uint32 id = 4;
   }
 
+  message SimulationStartEvent {}
+  message HumanAircraftRepairStart {}
+  message HumanAircraftRepairFinish {}
+
   /**
    * The reason a player disconnected for.
    */
@@ -558,6 +562,9 @@ message StreamEventsResponse {
 
     RunwayTakeoffEvent runway_takeoff = 54;
     RunwayTouchEvent runway_touch = 55;
+    SimulationStartEvent simulation_start = 58;
+    HumanAircraftRepairStart human_aircraft_repair_start = 59;
+    HumanAircraftRepairFinish human_aircraft_repair_finish = 60;
 
     // The following events are additions on top of DCS's own event enum,
     // which is why they start at 8192 to give DCS plenty of space for

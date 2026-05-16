@@ -22,7 +22,7 @@ end
 
 local handler = {}
 
-function handler.onMissionLoadEnd()
+function handler.onMissionLoadBegin()
   local ok, err = pcall(load)
   if not ok then
     log.write("[GRPC-Hook]", log.ERROR, "Failed to set up gRPC listener: " .. tostring(err))

@@ -1,7 +1,7 @@
 local isMissionEnv = DCS == nil
 
 if isMissionEnv then
-  env.info("[GRPC] mission loading ...")
+  env.info("[GRPC] mission loading at grpc.lua ...")
 end
 
 --
