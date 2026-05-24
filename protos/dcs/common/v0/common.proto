@@ -247,6 +247,15 @@ message Unknown {
 }
 
 /**
+ * This type represents some object that cease to exist
+ * For example it is often a Weapon in Hit or Kill events
+ */
+message TombstoneObject {
+  uint32 runtime_id = 1;
+  optional string class_name = 2;
+}
+
+/**
  * An instance of a DCS Unit
  *
  * A unit is an "active" unit in a DCS mission. This means it has an attached AI
@@ -254,7 +263,7 @@ message Unknown {
  * etc.
  */
 message Unit {
-  // The DCS generated ID
+  // The Mission Editor ID
   uint32 id = 1;
   // The name of the unit as assigned in the mission editor
   string name = 2;
@@ -277,6 +286,8 @@ message Unit {
   // The number of this unit in the group. Does not change as units are
   // destroyed
   uint32 number_in_group = 11;
+  // Runtime Id
+  optional uint32 runtime_id = 12;
 }
 
 /**
@@ -332,6 +343,8 @@ message Weapon {
   WeaponCategory category = 6;
   //Weapon coalition
   Coalition coalition = 7;
+  //Runtime Id
+  optional uint32 runtime_id = 8;
 }
 
 /**
@@ -351,6 +364,8 @@ message Static {
   Coalition coalition = 4;
   // The position of the static
   Position position = 5;
+  //Runtime Id
+  optional uint32 runtime_id = 8;
 }
 
 /**
@@ -392,6 +407,18 @@ message Airbase {
  * An instance of a DCS Cargo object
  */
 message Cargo {
+}
+
+/*
+ * DCS likes to give a non-existent object for a weapon
+ * hence we pass a Tombstone Object instead of an actual Weapon
+*/
+message OptionalWeapon {
+  oneof optional_weapon {
+    Weapon weapon = 1;
+    TombstoneObject tombstone = 2;
+    Unknown unknown = 3;
+  }
 }
 
 /*

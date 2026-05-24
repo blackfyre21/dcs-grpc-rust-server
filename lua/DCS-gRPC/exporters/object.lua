@@ -5,6 +5,13 @@
 -- Each exporter has an equivalent .proto Message defined and they must
 -- be kept in sync
 --
+--
+GRPC.exporters.tombstone = function (object)
+  return {
+    runtimeId = object.id_,
+    className = object.className_,
+  }
+end
 
 GRPC.exporters.position = function(pos)
   local lat, lon, alt = coord.LOtoLL(pos)
@@ -28,6 +35,7 @@ GRPC.exporters.unit = function(unit)
     group = GRPC.exporters.group(Unit.getGroup(unit)),
     numberInGroup = unit:getNumber(),
     rawTransform = GRPC.exporters.rawTransform(unit),
+    runtimeId = unit.id_,
   }
 end
 
@@ -80,6 +88,7 @@ GRPC.exporters.weapon = function(weapon)
     coalition = weapon:getCoalition() + 1,  --increment for non zero-indexed gRPC enum
     category = weapon:getCategoryEx() + 1, --increment for non zero-indexed gRPC enum
     rawTransform = GRPC.exporters.rawTransform(weapon),
+    runtimeId = weapon.id_,
   }
 end
 
@@ -90,6 +99,7 @@ GRPC.exporters.static = function(static)
     name = static:getName(),
     coalition = static:getCoalition() + 1, -- Increment for non zero-indexed gRPC enum
     position = GRPC.exporters.position(static:getPoint()),
+    runtimeId = static.id_,
   }
 end
 

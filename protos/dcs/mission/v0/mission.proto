@@ -105,7 +105,7 @@ message StreamEventsResponse {
     // name of the aircraft).
     optional dcs.common.v0.Initiator initiator = 1;
     // The weapon that the target has been hit with.
-    dcs.common.v0.Weapon weapon = 2;
+    dcs.common.v0.OptionalWeapon weapon = 2;
     // The object that has been hit.
     dcs.common.v0.Target target = 3;
     // The weapon the target got hit by.
@@ -329,7 +329,7 @@ message StreamEventsResponse {
     // The object that fired the weapon.
     dcs.common.v0.Initiator initiator = 1;
     // The weapon that the target has been killed with.
-    dcs.common.v0.Weapon weapon = 2;
+    dcs.common.v0.OptionalWeapon weapon = 2;
     // The object that has been killed.
     dcs.common.v0.Target target = 3;
     // The name of the weapon that killed the target (exists instead of weapon

@@ -95,6 +95,7 @@ pub mod v0 {
         group: Option<Group>,
         number_in_group: u32,
         raw_transform: Option<RawTransform>,
+        runtime_id: Option<u32>,
     }
 
     impl From<UnitIntermediate> for Unit {
@@ -108,6 +109,7 @@ pub mod v0 {
                 group,
                 number_in_group,
                 raw_transform,
+                runtime_id,
             } = i;
             let transform = Transform::from(raw_transform.unwrap_or_default());
             Unit {
@@ -122,6 +124,7 @@ pub mod v0 {
                 player_name: Some(transform.player_name),
                 group,
                 number_in_group,
+                runtime_id
             }
         }
     }
@@ -134,6 +137,7 @@ pub mod v0 {
         category: i32,
         coalition: i32,
         raw_transform: Option<RawTransform>,
+        runtime_id: Option<u32>,
     }
 
     impl From<WeaponIntermediate> for Weapon {
@@ -144,6 +148,7 @@ pub mod v0 {
                 category,
                 coalition,
                 raw_transform,
+                runtime_id,
             } = i;
             let transform = Transform::from(raw_transform.unwrap_or_default());
             Weapon {
@@ -154,6 +159,7 @@ pub mod v0 {
                 velocity: Some(transform.velocity),
                 category: category,
                 coalition: coalition,
+                runtime_id,
             }
         }
     }
