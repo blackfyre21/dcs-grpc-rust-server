@@ -75,8 +75,8 @@ GRPC.methods.markToAll = function(params)
 end
 
 GRPC.methods.markToCoalition = function(params)
-  local point = coord.LLtoLO(params.position.lat, params.position.lon, params.position.alt)
-  local idx = getMarkId()
+  local point = GRPC.Common.extractPosition(params.position)
+  local idx = params.id or getMarkId()
 
   local coalition = params.coalition - 1 -- Decrement for non zero-indexed gRPC enum
   trigger.action.markToCoalition(idx, params.text, point, coalition, params.readOnly, params.message)
@@ -104,14 +104,14 @@ GRPC.methods.removeMark = function(params)
 end
 
 GRPC.methods.markupToAll = function(params)
-  local idx = getMarkId()
+  local idx = params.idx or getMarkId()
   local coalition = params.coalition or -1
 
    -- Number of points is variable so we need to make a table that we unpack
    -- later and add all parameters after the points into it as well
   local packedParams = {}
   for _, value in ipairs(params.points) do
-    table.insert(packedParams, coord.LLtoLO(value.lat, value.lon, value.alt))
+    table.insert(packedParams, GRPC.Common.extractPosition(value))
   end
 
   table.insert(packedParams, {
