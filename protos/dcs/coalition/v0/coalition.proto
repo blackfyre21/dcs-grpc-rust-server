@@ -27,6 +27,9 @@ service CoalitionService {
   rpc AddLinkedStatic(AddLinkedStaticRequest)
       returns (AddLinkedStaticResponse) {}
 
+  rpc SpawnHeliport(SpawnHeliportRequest)
+      returns (SpawnHeliportResponse) {}
+
   // https://wiki.hoggitworld.com/view/DCS_func_getGroups
   rpc GetGroups(GetGroupsRequest) returns (GetGroupsResponse) {}
 
@@ -179,6 +182,32 @@ message AddStaticObjectRequest {
   dcs.common.v0.InputPosition position = 8;
   // cargo mass in kilograms
   uint32 cargo_mass = 9;
+  //mission ID
+  uint32 id = 10;
+}
+
+message SpawnHeliportRequest {
+  message Heliport {
+    optional uint32 unit_id = 1;
+    string type = 2;
+    string category = 3;
+    string shape_name = 4;
+    double heading = 5;
+    dcs.common.v0.InputCoordinates position = 6;
+    bool dynamic_spawn = 7;
+    bool dynamic_cargo = 8;
+    bool allow_hot_start = 9;
+    double frequency = 10;
+    dcs.common.v0.RadioModulation modulation = 11;
+    uint32 callsign_id = 12;
+  }
+  string name = 1;
+  repeated Heliport units = 2;
+  dcs.common.v0.InputCoordinates position = 3;
+  dcs.common.v0.Country country = 4;
+}
+
+message SpawnHeliportResponse {
 }
 
 message AddStaticObjectResponse {

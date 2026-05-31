@@ -22,6 +22,14 @@ impl CoalitionService for MissionRpc {
         Ok(Response::new(res))
     }
 
+    async fn spawn_heliport(
+        &self,
+        request: Request<coalition::v0::SpawnHeliportRequest>,
+    ) -> Result<Response<coalition::v0::SpawnHeliportResponse>, Status> {
+        let res = self.request("spawnHeliport", request).await?;
+        Ok(Response::new(res))
+    }
+
     async fn get_static_objects(
         &self,
         request: Request<coalition::v0::GetStaticObjectsRequest>,

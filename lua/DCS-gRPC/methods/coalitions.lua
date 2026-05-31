@@ -203,7 +203,7 @@ end
 local function getPylons(pylons)
   local edPylons = {}
   for _, p in ipairs(pylons) do
-    edPylons[#edPylons+1] = {["CLSID"] = p.clsid, settings = p.settings}
+    edPylons[#edPylons + 1] = { ["CLSID"] = p.clsid, settings = p.settings }
   end
   return edPylons
 end
@@ -269,6 +269,47 @@ GRPC.methods.spawnGroup = function(params)
   else
     return GRPC.errorInvalidArgument("group data must be specified")
   end
+  return GRPC.success({})
+end
+
+local function makeStaticUnits(paramsUnits)
+  local units = {}
+  for _, u in ipairs(paramsUnits) do
+    local p = Common.extractPosition(u.position)
+    local unit = {
+      unitId = u.unitId,
+      type = u.type,
+      category = u.category,
+      shape_name = u.shapeName,
+      heading = u.heading,
+      x = p.x,
+      y = p.z,
+      dynamicSpawn = u.dynamicSpawn,
+      dynamicCargo = u.dynamicCargo,
+      allowHotStart = u.allowHotStart,
+      heliport_frequency = u.frequency,
+      heliport_modulation = u.modulation - 1,
+      heliport_callsign_id = u.callsignId,
+      name = u.name or tostring(u.unitId),
+    }
+    units[#units + 1] = unit
+  end
+
+  GRPC.logInfo("spawnHeliport units \n" .. Inspect(units))
+  return units
+end
+GRPC.methods.spawnHeliport = function(params)
+  GRPC.logInfo("spawnHeliport params \n" .. Inspect(params))
+  local p = Common.extractPosition(params.position)
+  local heliport = {
+    units = makeStaticUnits(params.units),
+    name = params.name,
+    x = p.x,
+    y = p.z,
+  }
+  local country = params.country - 1;
+  GRPC.logInfo("spawnHeliport heliport \n" .. Inspect(heliport))
+  coalition.addGroup(country, -1, heliport)
   return GRPC.success({})
 end
 
