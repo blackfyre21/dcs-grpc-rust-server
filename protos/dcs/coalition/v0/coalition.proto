@@ -200,6 +200,7 @@ message SpawnHeliportRequest {
     double frequency = 10;
     dcs.common.v0.RadioModulation modulation = 11;
     uint32 callsign_id = 12;
+    string name = 13;
   }
   string name = 1;
   repeated Heliport units = 2;

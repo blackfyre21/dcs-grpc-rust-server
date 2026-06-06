@@ -117,7 +117,6 @@ local function makeCommonUnitData(unitCommon)
   unitData.skill = Common.getSkill(unitCommon.skill)
   unitData.heading = unitCommon.heading
   unitData.livery_id = unitCommon.liveryId or nil
-  GRPC.logInfo("Extracting position from makeCommonUnitData " .. Inspect(unitCommon.position))
   local pos = Common.extractPosition(unitCommon.position) --bad?
   unitData.x = pos.x
   unitData.y = pos.z
@@ -143,7 +142,6 @@ local function makeRoute(route)
     wp.ETA_locked = p.etaLocked
     wp.action = Common.getWaypointAction(p.action)
     wp.formation_template = p.formationTemplate or ""
-    GRPC.logInfo("Extracting position from makeWp " .. Inspect(p.position))
     local pos = Common.extractPosition(p.position)
     wp.alt = pos.y
     wp.x = pos.x
@@ -169,7 +167,6 @@ local function makeCommonGroupData(common)
   groupData.task_selected = common.taskSelected or true
   groupData.uncontrollable = common.uncontrollable or false
   groupData.lateActivation = common.lateActivation or false
-  GRPC.logInfo("Extracting position from makeCommonGroupData " .. Inspect(common.position))
   local pos = Common.extractPosition(common.position)
   groupData.x = pos.x
   groupData.y = pos.z
@@ -245,23 +242,18 @@ end
 
 
 GRPC.methods.spawnGroup = function(params)
-  GRPC.logInfo("spawnGroup has been invoked with params = " .. Inspect(params))
   if params.groupData then
     if params.groupData.vehicle then
       local groupData = spawnSurfaceGroup(params.groupData.vehicle)
-      GRPC.logInfo("Attempting to spawn\n" .. Inspect(groupData))
       coalition.addGroup(params.country - 1, Group.Category.GROUND, groupData)
     elseif params.groupData.ship then
       local groupData = spawnSurfaceGroup(params.groupData.ship)
-      GRPC.logInfo("Attempting to spawn\n" .. Inspect(groupData))
       coalition.addGroup(params.country - 1, Group.Category.SHIP, groupData)
     elseif params.groupData.airplane then
       local groupData = spawnAircraftGroup(params.groupData.airplane)
-      GRPC.logInfo("Attempting to spawn\n" .. Inspect(groupData))
       coalition.addGroup(params.country - 1, Group.Category.AIRPLANE, groupData)
     elseif params.groupData.helicopter then
       local groupData = spawnAircraftGroup(params.groupData.airplane)
-      GRPC.logInfo("Attempting to spawn\n" .. Inspect(groupData))
       coalition.addGroup(params.country - 1, Group.Category.HELICOPTER, groupData)
     else
       return GRPC.errorInvalidArgument("group data is unknown")
@@ -295,11 +287,9 @@ local function makeStaticUnits(paramsUnits)
     units[#units + 1] = unit
   end
 
-  GRPC.logInfo("spawnHeliport units \n" .. Inspect(units))
   return units
 end
 GRPC.methods.spawnHeliport = function(params)
-  GRPC.logInfo("spawnHeliport params \n" .. Inspect(params))
   local p = Common.extractPosition(params.position)
   local heliport = {
     units = makeStaticUnits(params.units),
@@ -308,7 +298,6 @@ GRPC.methods.spawnHeliport = function(params)
     y = p.z,
   }
   local country = params.country - 1;
-  GRPC.logInfo("spawnHeliport heliport \n" .. Inspect(heliport))
   coalition.addGroup(country, -1, heliport)
   return GRPC.success({})
 end
