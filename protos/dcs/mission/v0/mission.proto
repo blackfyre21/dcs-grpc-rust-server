@@ -413,6 +413,8 @@ message StreamEventsResponse {
     // The player's id in the current server session
     // (used to for name/slot/... changes).
     uint32 player_id = 4;
+    // User's game localization
+    string lang = 5;
   }
 
   message SimulationStartEvent {}

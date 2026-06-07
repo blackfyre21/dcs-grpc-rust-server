@@ -94,7 +94,7 @@ function handler.onPlayerConnect(playerId)
       name = name,
       ucid = ucid,
       playerId = playerInfo.id,
-      --lang = lang,
+      lang = lang,
     },
   })
 end
