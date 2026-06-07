@@ -412,7 +412,7 @@ message StreamEventsResponse {
     string ucid = 3;
     // The player's id in the current server session
     // (used to for name/slot/... changes).
-    uint32 id = 4;
+    uint32 player_id = 4;
   }
 
   message SimulationStartEvent {}
