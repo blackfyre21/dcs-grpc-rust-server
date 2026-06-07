@@ -417,6 +417,10 @@ message StreamEventsResponse {
     string lang = 5;
   }
 
+  /**
+   * Fired when a player changes a coalition
+   * or releases a slot
+  */
   message PlayerChangeCoalitionEvent {
     int32 player_id = 1;
     dcs.common.v0.Coalition coalition = 2;

@@ -59,21 +59,6 @@ function handler.onPlayerTrySendChat(playerID, msg)
   })
 end
 
---[[
-function handler.onPlayerTryConnect(addr, name, ucid, id)
-  grpc.event({
-    time = DCS.getModelTime(),
-    event = {
-      type = "connect",
-      addr = addr,
-      name = name,
-      ucid = ucid,
-      id = id,
-    },
-  })
-end
---]]
-
 function handler.onPlayerConnect(playerId)
   local playerInfo = net.get_player_info(playerId)
   local addr = ""
