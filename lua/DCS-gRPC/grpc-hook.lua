@@ -128,4 +128,15 @@ function handler.onPlayerChangeSlot(playerId)
   end
 end
 
+function handler.onPlayerChangeCoalition(playerId, side)
+    grpc.event({
+      time = DCS.getModelTime(),
+      event = {
+        type = "playerChangeCoalition",
+        playerId = playerId,
+        coalition = side + 1, -- offsetting for grpc COALITION enum
+      },
+    })
+end
+
 DCS.setUserCallbacks(handler)

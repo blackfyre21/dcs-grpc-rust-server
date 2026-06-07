@@ -417,6 +417,11 @@ message StreamEventsResponse {
     string lang = 5;
   }
 
+  message PlayerChangeCoalitionEvent {
+    int32 player_id = 1;
+    dcs.common.v0.Coalition coalition = 2;
+  }
+
   message SimulationStartEvent {}
   message HumanAircraftRepairStart {}
   message HumanAircraftRepairFinish {}
@@ -582,6 +587,7 @@ message StreamEventsResponse {
     TtsEvent tts = 8200;
     SrsConnectEvent srs_connect = 8201;
     SrsDisconnectEvent srs_disconnect = 8202;
+    PlayerChangeCoalitionEvent player_change_coalition = 8203;
   }
 }
 
