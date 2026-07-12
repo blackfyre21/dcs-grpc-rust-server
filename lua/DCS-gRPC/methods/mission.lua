@@ -1,5 +1,14 @@
 ---dcsme
+
 local missionCommands = missionCommands
+
+log.debug("GRPC mission.lue entry")
+GRPC.dcsEventsMap = {}
+if #GRPC.dcsEventsMap == 0 and Sim == nil then
+  for eventName, eventId in pairs(world.event) do
+    GRPC.dcsEventsMap[eventId] = eventName
+  end
+end
 
 GRPC.weaponsLookup = {} ---@type table<integer, Weapon>
 
@@ -420,7 +429,8 @@ GRPC.onDcsEvent = function(event)
     -- S_EVENT_BDA: apparently not used yet
     -- S_EVENT_MAX: assumingly an end marker for the events enum and thus not a real event
   else
-    GRPC.logWarning("Skipping unimplemented event id " .. tostring(event.id))
+    GRPC.logWarning("Skipping unimplemented event id " ..
+      GRPC.dcsEventsMap[event.id] or tostring(event.id))
     return nil
   end
 end
