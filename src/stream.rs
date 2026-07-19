@@ -314,25 +314,28 @@ impl UnitState {
 
         if let Some((before, after)) = self.unit.position.as_mut().zip(position) {
             if !position_equalish(before, &after) {
+                log::debug!("Position changing from {:?} to {:?}", before, after);
                 *before = after;
                 changed = true;
             }
         }
         if let Some((before, after)) = self.unit.orientation.as_mut().zip(orientation) {
             if !orientation_equalish(before, &after) {
+                log::debug!("Orientation changing from {:?} to {:?}", before, after);
                 *before = after;
                 changed = true;
             }
         }
         if let Some((before, after)) = self.unit.velocity.as_mut().zip(velocity) {
             if !velocity_equalish(before, &after) {
+                log::debug!("Velocity changing from {:?} to {:?}", before, after);
                 *before = after;
                 changed = true;
             }
         }
 
         if let Some((before, after)) = self.unit.player_name.as_mut().zip(player_name) {
-            if  *before != after {
+            if *before != after {
                 *before = after;
                 changed = true;
             }
@@ -429,7 +432,9 @@ fn velocity_equalish(l: &Velocity, r: &Velocity) -> bool {
             return false;
         }
     }
-
+    //commented out due to significant jitter on player controlled units
+    //even when they are standing, not a big deal, but it complicates debugging
+/*
     if !degrees_equalish(*heading, r.heading) {
         return false;
     }
@@ -438,12 +443,13 @@ fn velocity_equalish(l: &Velocity, r: &Velocity) -> bool {
         return false;
     }
 
+*/
     true
 }
 
 /// Check whether two vectors are equal, taking an epsilon into account.
 fn vector_equalish(a: &Vector, b: &Vector) -> bool {
-    const EPSILON: f64 = 0.000001;
+    const EPSILON: f64 = 0.00001;
     (a.x - b.x).abs() < EPSILON && (a.y - b.y).abs() < EPSILON && (a.z - b.z).abs() < EPSILON
 }
 
