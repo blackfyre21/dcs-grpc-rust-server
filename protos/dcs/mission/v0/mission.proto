@@ -618,6 +618,7 @@ message StreamUnitsResponse {
   message UnitGone {
     uint32 id = 1;
     string name = 2;
+    uint32 runtime_id = 3;
   }
 
   double time = 1;

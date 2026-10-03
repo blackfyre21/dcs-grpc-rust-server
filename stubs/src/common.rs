@@ -95,7 +95,7 @@ pub mod v0 {
         group: Option<Group>,
         number_in_group: u32,
         raw_transform: Option<RawTransform>,
-        runtime_id: Option<u32>,
+        runtime_id: u32,
     }
 
     impl From<UnitIntermediate> for Unit {
@@ -137,7 +137,7 @@ pub mod v0 {
         category: i32,
         coalition: i32,
         raw_transform: Option<RawTransform>,
-        runtime_id: Option<u32>,
+        runtime_id: u32,
     }
 
     impl From<WeaponIntermediate> for Weapon {

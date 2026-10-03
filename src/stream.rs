@@ -184,6 +184,8 @@ async fn handle_event(
                         update: Some(Update::Gone(UnitGone {
                             id: unit_state.unit.id,
                             name: unit_state.unit.name.clone(),
+                            runtime_id: unit_state.unit.runtime_id,
+                            
                         })),
                     }))
                     .await?;
@@ -249,6 +251,8 @@ async fn update_unit(ctx: &Context, unit_state: &mut UnitState) -> Result<(), Er
                     update: Some(Update::Gone(UnitGone {
                         id: unit_state.unit.id,
                         name: unit_state.unit.name.clone(),
+                        runtime_id: unit_state.unit.runtime_id,
+                        
                     })),
                 }))
                 .await?;
