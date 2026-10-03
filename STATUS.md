@@ -39,6 +39,9 @@ future; pull requests are welcomed for expanding the API equivalency.
     - [ ] Waypoints
     - [ ] Tasks
     - [ ] Loadout
+- [x] `addGroup` via `SpawnGroup` (vehicle, ship, airplane and helicopter groups with units, waypoints, tasks and
+  payloads)
+- [x] `addGroup` for heliports/FARPs via `SpawnHeliport`
 - [x] `addStaticObject`
 - [x] `getGroups`
 - [x] `getStaticObjects`
@@ -238,13 +241,16 @@ should use their independent logging and tracing functions.
 - [ ] `S_EVENT_TRIGGER_ZONE`
 - [x] `S_EVENT_LANDING_QUALITY_MARK`
 - [ ] `S_EVENT_BDA`
+- [x] `S_EVENT_SIMULATION_START`
+- [ ] `S_EVENT_HUMAN_AIRCRAFT_REPAIR_START` (defined in proto, not emitted yet)
+- [ ] `S_EVENT_HUMAN_AIRCRAFT_REPAIR_FINISH` (defined in proto, not emitted yet)
 - [ ] <strike>`S_EVENT_MAX`</strike> Not a real event
 
 ### DCS Control Functions
 - [x] `setUserCallbacks`
-  - [ ] `onMissionLoadBegin`
+  - [x] `onMissionLoadBegin` (Used; not exposed to Clients)
   - [ ] `onMissionLoadProgress`
-  - [x] `onMissionLoadEnd` (Used; not exposed to Clients)
+  - [ ] `onMissionLoadEnd`
   - [ ] `onSimulationStart`
   - [x] `onSimulationStop` (Used; not exposed to Clients)
   - [x] `onSimulationFrame` (Used; not exposed to Clients)
@@ -254,12 +260,13 @@ should use their independent logging and tracing functions.
   - [ ] `onNetConnect`
   - [ ] `onNetMissionChanged`
   - [ ] `onNetDisconnect`
-  - [ ] `onPlayerConnect`
+  - [x] `onPlayerConnect` (Emitted as a special GRPC event)
   - [x] `onPlayerDisconnect` (Emitted as a special GRPC event)
   - [ ] `onPlayerStart`
   - [ ] `onPlayerStop`
-  - [ ] `onPlayerChangeSlot`
-  - [x] `onPlayerTryConnect` (Emitted as a special GRPC event)
+  - [x] `onPlayerChangeSlot` (Emitted as a special GRPC event)
+  - [x] `onPlayerChangeCoalition` (Emitted as a special GRPC event)
+  - [ ] `onPlayerTryConnect`
   - [x] `onPlayerTrySendChat` (Emitted as a special GRPC event)
   - [ ] `onPlayerTryChangeSlot`
 - [x] `setPause` - API name changed to `setPaused` as this is more accurate
@@ -318,11 +325,11 @@ should use their independent logging and tracing functions.
   - [ ] `hasAttribute`
   - [x] `getName`
   - [x] `getPoint`
-  - [ ] `getPosition`
-  - [ ] `getVelocity`
+  - [x] `getPosition` (via `WeaponService.GetTransform`)
+  - [x] `getVelocity` (via `WeaponService.GetTransform`)
   - [ ] `inAir`
 - [ ] `CoalitionObject` class members
-  - [ ] `getCoalition`
+  - [x] `getCoalition`
   - [ ] `getCountry`
 - [ ] `Weapon` class members
   - [ ] `getLauncher`

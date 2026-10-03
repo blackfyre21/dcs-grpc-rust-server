@@ -11,6 +11,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Request uses `dcs.common.v0.ObjectCategory[]` and `SearchVolume` (with `InputPosition` for geo points).
   - Response returns `dcs.common.v0.Target[]` for consistent object union across services.
   - Lua implementation unwraps grpcui oneof wrapper (`volume.shape`) and supports both wrapped and flattened shapes.
+- Coalition: `SpawnGroup` RPC to spawn vehicle, ship, airplane and helicopter groups with routes/waypoints, tasks,
+  callsigns, payloads (pylons) and additional properties. Spawn data types live in the new `dcs/common/v0/ai.proto`.
+- Coalition: `SpawnHeliport` RPC to spawn heliports/FARPs, including frequency, modulation, callsign and name.
+- Coalition: optional mission `id` on `AddStaticObjectRequest`.
+- Weapon: new `WeaponService` with `GetTransform`, returning position/orientation/velocity of weapons tracked from
+  `Shot` events.
+- `Weapon` now includes `category` (new `WeaponCategory` enum), `coalition` and `runtimeId`.
+- `Unit`, `Static` and `StreamUnitsResponse.UnitGone` now include `runtimeId`.
+- `GetTransformResponse` now includes `playerName`, and `StreamUnits` emits an update when a unit's player name
+  changes (e.g. Combined Arms units taken over by a player).
+- New `COALITION_CONTESTED` coalition value for airbases contested under DCS' base capture logic.
+- New `RadioModulation` enum.
+- New `InputCoordinates` type that accepts either geodetic (`lat`/`lon`/`alt`) or DCS cartesian (`u`/`v`/`alt`)
+  coordinates.
+- Events: `SimulationStart` and `PlayerChangeCoalition`.
+- Events: `HumanAircraftRepairStart` and `HumanAircraftRepairFinish` (proto definitions only; not emitted yet).
+- `ConnectEvent` now includes `lang` (the player's game language).
+- `TombstoneObject` type, used in `Hit`/`Kill` events when DCS passes a weapon object that no longer exists.
+- `java_package` option on all proto files.
+- `MarkupToAll` / `MarkupToCoalition` accept an optional `idx` and `MarkToCoalition` uses the given `id` instead of
+  always generating a new one.
+
+### Changed
+- **Breaking:** `Atmosphere` requests (`GetWind`, `GetWindWithTurbulence`, `GetTemperatureAndPressure`) replaced
+  `InputPosition position` with `InputCoordinates point`.
+- **Breaking:** `MarkToCoalition.position`, `MarkupToAll.points` and `MarkupToCoalition.points` now use
+  `InputCoordinates` instead of `InputPosition`.
+- **Breaking:** `HitEvent.weapon` and `KillEvent.weapon` are now an `OptionalWeapon` (`weapon`, `tombstone` or
+  `unknown`) instead of `Weapon`.
+- **Breaking:** `Unknown` object now contains `runtimeId` instead of `name`, since not every object has a name.
+- **Breaking:** `ConnectEvent.id` renamed to `playerId`. The event is now emitted from `onPlayerConnect` instead of
+  `onPlayerTryConnect`, so it only fires for players that actually connected.
+- **Breaking:** `Weapon.id` is now the weapon's runtime id (`id_`) instead of being parsed from its name.
+- `Unit.id` documented as the Mission Editor id.
+- The hook now sets up the gRPC listener on `onMissionLoadBegin` instead of `onMissionLoadEnd`.
+- Unimplemented event warnings now log the DCS event name instead of only its id.
+- `StreamUnits` no longer compares velocity heading/speed when detecting changes (avoids jitter from player-controlled
+  units standing still), and the vector comparison epsilon was relaxed from `1e-6` to `1e-5`.
+
+### Fixed
+- `LandingAfterEjection` event: the place is now taken from the initiator's position, as DCS passes a non-existent
+  airbase object.
+- Ejected pilots (objects without a category but of class `Unit`) are exported as units.
+- Cargo objects were never exported due to a typo (`Object.Category.Cargo` → `Object.Category.CARGO`).
+- Objects with unknown category no longer cause an error when logging, since `getID()` is not available on all objects.
+- `Unit.group` export no longer fails when a unit has no group.
+- `PlayerChangeSlot` event no longer errors when player info is unavailable.
 
 ## [0.8.1] 2024-11-05
 
