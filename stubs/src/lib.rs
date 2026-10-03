@@ -90,6 +90,7 @@ mod tests {
                     initiator: Some(Initiator {
                         initiator: Some(initiator::Initiator::Unit(Unit {
                             id: 1,
+                            runtime_id: 37,
                             name: "Aerial-1-1".to_string(),
                             callsign: "Enfield11".to_string(),
                             r#type: "FA-18C_hornet".to_string(),
