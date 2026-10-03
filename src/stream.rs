@@ -426,8 +426,8 @@ fn orientation_equalish(l: &Orientation, r: &Orientation) -> bool {
 /// Check whether two velocities are equal, taking an epsilon into account.
 fn velocity_equalish(l: &Velocity, r: &Velocity) -> bool {
     let Velocity {
-        heading,
-        speed,
+        heading: _,
+        speed: _,
         velocity,
     } = l;
 
